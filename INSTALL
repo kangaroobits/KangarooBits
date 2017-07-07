@@ -1,0 +1,9 @@
+Building KangaBits
+
+See doc/readme-qt.rst for instructions on building KangaBits QT,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of KangaBits.
+
+See doc/build-*.txt for instructions on building KangaBitsd,
+the intended-for-services, no-graphical-interface, reference
+implementation of KangaBits.
