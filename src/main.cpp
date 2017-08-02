@@ -980,48 +980,54 @@ int64_t GetProofOfWorkReward(int64_t nHeight, int64_t nFees)
 
     int64_t nSubsidy = 0 * COIN; // Initializing Subsidy
 
+
     if(nHeight == 1)
     {
         nSubsidy = 100000000 * COIN; // Premine for KangaBits
     }
-    else if(nHeight > 99)
+    
+    else if (nHeight < 100)
     {
-        if(nHeight < 10000)
-        {
+    	nSubsidy = 0 * COIN;
+    }
+    
+    else if(nHeight < 10000)
+    {
         nSubsidy = 150 * COIN; 
-        }
-        else if(nHeight > 9999)
-        {
-            if(nHeight < 20000)
-            {
-                nSubsidy = 100 * COIN;
-            }
-        }
-        else if(nHeight > 19999)
-        {
-            if(nHeight < 30000)
-            {
-                nSubsidy = 50 * COIN;
-            }
-        }
-        else if(nHeight > 29999)
-        {
-            if(nHeight < 50000)
-            {
-                nSubsidy = 100 * COIN;
-            }
-            else if(nHeight > 49999)
-            {
-                int64_t nHalveHeigh = nHeight - 50000;
-                nSubsidy >>= (nHalveHeigh / 50000);
-            }
-        }
+    }
+        
+    else if(nHeight < 20000)
+    {
+        nSubsidy = 100 * COIN;
+    }
+    
+        else if(nHeight < 21500)
+    {
+        nSubsidy = 0 * COIN;
+    }
+    
+    
+    else if(nHeight < 30000)
+    {
+         nSubsidy = 50 * COIN;
     }
 
+    else if(nHeight < 50000)
+    {
+        nSubsidy = 100 * COIN;
+    }
+            
+    else if(nHeight > 49999)
+    {
+        int64_t nHalveHeigh = nHeight - 50000;
+        nSubsidy >>= (nHalveHeigh / 50000);
+    }
+
+
     if(rand1 <= 8000) 
-        nSubsidy *= 3;
+        nSubsidy = nSubsidy * 3;
     if(rand1 <= 2500) 
-        nSubsidy *= 10;
+        nSubsidy = nSubsidy * 10;
 
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
     return nSubsidy + nFees;
@@ -1043,50 +1049,45 @@ int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
     int64_t nSubsidy = 0;
     int64_t nHeight = nBestHeight + 1;
 
-    if(nBestHeight > 99) 
+    if(nBestHeight < 100) 
+   	{
+    	nSubsidy = 0 * COIN;
+    }
+    	 
+    else if(nHeight < 10000)
     {
-        if(nHeight < 10000)
-        {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD1 * 33 / (365 * 33 + 8); // 10%
-        }
-        else if(nHeight > 9999)
-        {
-            if(nHeight < 20000)
-            {
-                nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
-            }
-        }
-        else if(nHeight > 19999)
-        {
-            if(nHeight < 30000)
-            {
-                nSubsidy = nCoinAge * COIN_YEAR_REWARD2 * 33 / (365 * 33 + 8); // 5%
-            }
-        }
-        else if(nHeight > 29999)
-        {
-            if(nHeight < 50000)
-            {
-                nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
-            }
-        }
-        else if(nHeight > 49999)
-        {
-            if(nHeight < 500000)
-            {
-                nSubsidy = nCoinAge * COIN_YEAR_REWARD2 * 33 / (365 * 33 + 8); // 5%
-            }
-        }
-        else if(nHeight > 499999)
-        {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
-        }
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD1 * 33 / (365 * 33 + 8); // 10%
+    }
+        
+    else if(nHeight < 20000)
+    {
+           nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
+    }
+
+    else if(nHeight < 30000)
+    {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD2 * 33 / (365 * 33 + 8); // 5%
+    }
+
+    else if(nHeight < 50000)
+    {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
+    }
+
+    else if(nHeight < 500000)
+    {
+       nSubsidy = nCoinAge * COIN_YEAR_REWARD2 * 33 / (365 * 33 + 8); // 5%
+    }
+
+    else if(nHeight > 499999)
+    {
+    	nSubsidy = nCoinAge * COIN_YEAR_REWARD3 * 33 / (365 * 33 + 8); // 3%
     }
 
     if(rand1 <= 8000) 
-        nSubsidy *= 3;
+        nSubsidy = nSubsidy * 3;
     if(rand1 <= 2500) 
-        nSubsidy *= 10;
+        nSubsidy = nSubsidy * 10;
 
     LogPrint("creation", "GetProofOfStakeReward(): create=%s nCoinAge=%d\n", FormatMoney(nSubsidy), nCoinAge);
     return nSubsidy + nFees;
